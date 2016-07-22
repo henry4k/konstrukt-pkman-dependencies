@@ -1,0 +1,20 @@
+--- old/wxLua/build/CMakewxAppLib.cmake	2016-07-20 14:34:33.864975999 +0000
++++ new/wxLua/build/CMakewxAppLib.cmake	2016-07-20 14:36:54.788975999 +0000
+@@ -559,6 +559,17 @@
+     endif()
+ 
+     if ("${wxWidgets_PORTNAME}" STREQUAL "")
++        # libwx_mswu-3.1-x86_64-w64-mingw32
++        string(REGEX MATCH "wx_(msw)(univ)?(u)?(d)?" _match_new "${wxWidgets_LIBRARIES}")
++        if (NOT "${_match_new}" STREQUAL "")
++            set(wxWidgets_PORTNAME    "${CMAKE_MATCH_1}" )
++            set(wxWidgets_UNIVNAME    "${CMAKE_MATCH_2}" )
++            set(wxWidgets_UNICODEFLAG "${CMAKE_MATCH_3}" )
++            set(wxWidgets_DEBUGFLAG   "${CMAKE_MATCH_4}" )
++        endif()
++    endif()
++
++    if ("${wxWidgets_PORTNAME}" STREQUAL "")
+         message(WARNING "WARNING: Unable to find wxWidgets_PORTNAME/UNIVNAME/UNICODEFLAG/DEBUGFLAG from lib names! You may have to add code to CMake to help it parse your wxWidgets lib names.")
+     endif()
+ 

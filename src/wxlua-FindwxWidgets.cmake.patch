@@ -1,0 +1,15 @@
+--- old/wxLua/build/FindwxWidgets.cmake	2016-07-20 14:09:01.820975999 +0000
++++ new/wxLua/build/FindwxWidgets.cmake	2016-07-20 14:13:48.472975999 +0000
+@@ -203,10 +203,10 @@
+ 
+ #=====================================================================
+ #=====================================================================
+-if(WIN32 AND NOT CYGWIN AND NOT MSYS)
++if(WIN32 AND NOT CYGWIN AND NOT MSYS AND NOT CMAKE_CROSSCOMPILING)
+   set(wxWidgets_FIND_STYLE "win32")
+ else()
+-  if(UNIX OR MSYS)
++  if(UNIX OR MSYS OR CMAKE_CROSSCOMPILING)
+     set(wxWidgets_FIND_STYLE "unix")
+   endif()
+ endif()

@@ -1,5 +1,5 @@
 GENERATED = .gitignore package package.tar.gz
-LIB_NAMES = wxwidgets
+LIB_NAMES = wxwidgets lua wxlua
 
 all: package.tar.gz
 
@@ -22,6 +22,13 @@ package: Makefile $(addprefix build/,$(filter-out glm,$(LIB_NAMES)))
 	# wxwidgets:
 	cp src/wxwidgets/docs/licence.txt $@/licenses/wxwidgets.txt
 	#cp build/wxwidgets/OpenAL32$(SHARED_LIBRARY_POSTFIX) $@/
+	# lua:
+	cp lua-LICENSE.txt $@/licenses/lua.txt
+	#cp build/lua/src/liblua.a $@/
+	# wxlua:
+	cp src/wxlua/wxLua/docs/license.txt $@/licenses/wxlua.txt
+	#cp build/lua/src/liblua.a $@/
+
 
 package.tar.gz: Makefile package
 	tar czvf $@ -C package .
