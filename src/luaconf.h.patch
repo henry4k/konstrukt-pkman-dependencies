@@ -1,0 +1,10 @@
+--- lua/src/luaconf.h	2013-11-21 18:26:16.000000000 +0100
++++ luaconf.h	2016-07-23 16:47:58.055020643 +0200
+@@ -544,6 +544,7 @@
+ ** Local configuration. You can use this space to add your redefinitions
+ ** without modifying the main part of the file.
+ */
++#define LUA_COMPAT_MODULE
+ 
+ 
+ 

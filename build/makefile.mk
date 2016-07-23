@@ -48,7 +48,7 @@ build/lua: src/lua
 	cp -R src/lua $@
 	cd $@ && $(MAKE) PLAT=generic \
 					 "CC=$(CC)" \
-					 "CFLAGS=$(CFLAGS)" \
+					 "CFLAGS=$(CFLAGS) -DLUA_COMPAT_MODULE" \
 					 "LDFLAGS=$(LDFLAGS)" \
 					 "AR=$(AR) rcu" \
 					 "RANLIB=$(RANLIB)"
