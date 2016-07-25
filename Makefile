@@ -1,5 +1,5 @@
 GENERATED = .gitignore package package.tar.gz
-LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem
+LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem zlib libzip lua-zip
 
 all: package.tar.gz
 
@@ -35,6 +35,8 @@ package: Makefile $(addprefix build/,$(filter-out glm,$(LIB_NAMES)))
 	# luafilesystem:
 	cp src/luafilesystem/LICENSE $@/licenses/luafilesystem.txt
 	cp build/luafilesystem/lfs.$(SHARED_LIBRARY_POSTFIX) $@/
+	# zlib:
+	cp zlib-LICENSE.txt $@/licenses/zlib.txt
 
 
 package.tar.gz: Makefile package

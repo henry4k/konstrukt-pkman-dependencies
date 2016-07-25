@@ -64,3 +64,12 @@ build/luafilesystem: src/luafilesystem build/lua
 	rm -rf $@
 	mkdir $@
 	$(CC) $(CFLAGS) $(LDFLAGS) -shared -Ibuild/lua/src -Lbuild/lua/src -llua52 -o $@/lfs$(SHARED_LIBRARY_POSTFIX) src/luafilesystem/src/lfs.c
+
+build/zlib: src/zlib build/toolchain.cmake
+	$(build-cmake)
+
+build/libzip: src/libzip
+	$(build-cmake)
+
+build/lua-zip: src/lua-zip build/libzip build/lua build/toolchain.cmake
+	$(build-cmake)
