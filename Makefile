@@ -24,10 +24,11 @@ package: Makefile $(addprefix build/,$(filter-out glm,$(LIB_NAMES)))
 	#cp build/wxwidgets/OpenAL32$(SHARED_LIBRARY_POSTFIX) $@/
 	# lua:
 	cp lua-LICENSE.txt $@/licenses/lua.txt
-	#cp build/lua/src/liblua.a $@/
+	cp build/lua/src/$(SHARED_LIBRARY_PREFIX)lua52$(SHARED_LIBRARY_POSTFIX) $@/
+	cp build/lua/src/lua$(EXECUTABLE_POSTFIX) $@/
 	# wxlua:
 	cp src/wxlua/wxLua/docs/license.txt $@/licenses/wxlua.txt
-	#cp build/lua/src/liblua.a $@/
+	#cp build/wxlua/ $@/
 	# lua-cjson:
 	cp src/lua-cjson/LICENSE $@/licenses/lua-cjson.txt
 	cp build/lua-cjson/cjson.$(SHARED_LIBRARY_POSTFIX) $@/

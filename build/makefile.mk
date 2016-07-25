@@ -46,13 +46,10 @@ build/wxwidgets: src/wxwidgets build/toolchain.cmake
 build/lua: src/lua
 	rm -rf $@
 	cp -R src/lua $@
-	cd $@ && $(MAKE) PLAT=generic \
-					 LUA_A=lua.dll \
+	cd $@ && $(MAKE) PLAT=mingw \
 					 "CC=$(CC)" \
-					 "MYCFLAGS=$(CFLAGS) -DLUA_BUILD_AS_DLL" \
-					 "MYLDFLAGS=$(LDFLAGS) -s" \
-					 "AR=$(CC) -shared -o" \
-					 "RANLIB=$(STRIP) --strip-unneeded" generic
+					 "MYCFLAGS=$(CFLAGS)" \
+					 "MYLDFLAGS=$(LDFLAGS)"
 
 build/wxlua: src/wxlua build/wxwidgets build/lua build/toolchain.cmake
 	rm -rf $@
@@ -66,4 +63,4 @@ build/lua-cjson: src/lua-cjson build/lua build/toolchain.cmake
 build/luafilesystem: src/luafilesystem build/lua
 	rm -rf $@
 	mkdir $@
-	$(CC) $(CFLAGS) $(LDFLAGS) -shared -Ibuild/lua/src -Lbuild/lua/src -llua -o $@/lfs$(SHARED_LIBRARY_POSTFIX) src/luafilesystem/src/lfs.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -shared -Ibuild/lua/src -Lbuild/lua/src -llua52 -o $@/lfs$(SHARED_LIBRARY_POSTFIX) src/luafilesystem/src/lfs.c
