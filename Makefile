@@ -1,5 +1,5 @@
 GENERATED = .gitignore package package.tar.gz
-LIB_NAMES = wxwidgets lua wxlua lua-cjson
+LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem
 
 all: package.tar.gz
 
@@ -30,8 +30,10 @@ package: Makefile $(addprefix build/,$(filter-out glm,$(LIB_NAMES)))
 	#cp build/lua/src/liblua.a $@/
 	# lua-cjson:
 	cp src/lua-cjson/LICENSE $@/licenses/lua-cjson.txt
-	cp src/lua-cjson/lua_cjson.h $@/
 	cp build/lua-cjson/cjson.$(SHARED_LIBRARY_POSTFIX) $@/
+	# luafilesystem:
+	cp src/luafilesystem/LICENSE $@/licenses/luafilesystem.txt
+	cp build/luafilesystem/lfs.$(SHARED_LIBRARY_POSTFIX) $@/
 
 
 package.tar.gz: Makefile package

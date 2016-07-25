@@ -15,3 +15,6 @@ src/wxlua: src/makefile.mk
 
 src/lua-cjson: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/mpx/lua-cjson/archive/2.1.0.tar.gz'
+
+src/luafilesystem: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/keplerproject/luafilesystem/archive/v_1_6_3.tar.gz'
