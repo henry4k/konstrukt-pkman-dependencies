@@ -1,5 +1,5 @@
 GENERATED = .gitignore package package.tar.gz
-LIB_NAMES = wxwidgets lua wxlua
+LIB_NAMES = wxwidgets lua wxlua lua-cjson
 
 all: package.tar.gz
 
@@ -28,6 +28,10 @@ package: Makefile $(addprefix build/,$(filter-out glm,$(LIB_NAMES)))
 	# wxlua:
 	cp src/wxlua/wxLua/docs/license.txt $@/licenses/wxlua.txt
 	#cp build/lua/src/liblua.a $@/
+	# lua-cjson:
+	cp src/lua-cjson/LICENSE $@/licenses/lua-cjson.txt
+	cp src/lua-cjson/lua_cjson.h $@/
+	cp build/lua-cjson/cjson.$(SHARED_LIBRARY_POSTFIX) $@/
 
 
 package.tar.gz: Makefile package

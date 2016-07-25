@@ -58,3 +58,6 @@ build/wxlua: src/wxlua build/wxwidgets build/lua build/toolchain.cmake
 	mkdir $@
 	cd $@ && cmake $(abspath src/wxlua/wxLua) -DCMAKE_TOOLCHAIN_FILE=$(abspath build/toolchain.cmake) -C$(abspath build/$(notdir $@).cmake)
 	cd $@ && $(MAKE)
+
+build/lua-cjson: src/lua-cjson build/lua build/toolchain.cmake
+	$(build-cmake)
