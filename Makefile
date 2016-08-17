@@ -1,5 +1,5 @@
 GENERATED = .gitignore package package.tar.gz
-LIB_NAMES = wxwidgets lua wxlua
+LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem zlib libzip lua-zip
 
 all: package.tar.gz
 
@@ -24,10 +24,19 @@ package: Makefile $(addprefix build/,$(filter-out glm,$(LIB_NAMES)))
 	#cp build/wxwidgets/OpenAL32$(SHARED_LIBRARY_POSTFIX) $@/
 	# lua:
 	cp lua-LICENSE.txt $@/licenses/lua.txt
-	#cp build/lua/src/liblua.a $@/
+	cp build/lua/src/$(SHARED_LIBRARY_PREFIX)lua52$(SHARED_LIBRARY_POSTFIX) $@/
+	cp build/lua/src/lua$(EXECUTABLE_POSTFIX) $@/
 	# wxlua:
 	cp src/wxlua/wxLua/docs/license.txt $@/licenses/wxlua.txt
-	#cp build/lua/src/liblua.a $@/
+	#cp build/wxlua/ $@/
+	# lua-cjson:
+	cp src/lua-cjson/LICENSE $@/licenses/lua-cjson.txt
+	cp build/lua-cjson/cjson.$(SHARED_LIBRARY_POSTFIX) $@/
+	# luafilesystem:
+	cp src/luafilesystem/LICENSE $@/licenses/luafilesystem.txt
+	cp build/luafilesystem/lfs.$(SHARED_LIBRARY_POSTFIX) $@/
+	# zlib:
+	cp zlib-LICENSE.txt $@/licenses/zlib.txt
 
 
 package.tar.gz: Makefile package

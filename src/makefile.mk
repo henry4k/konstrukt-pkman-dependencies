@@ -15,3 +15,18 @@ src/wxlua: src/makefile.mk
 	rm -rf $@
 	mv $@_ $@
 	cd src && cat wxlua.patch | patch -p1
+
+src/lua-cjson: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/mpx/lua-cjson/archive/2.1.0.tar.gz'
+
+src/luafilesystem: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/keplerproject/luafilesystem/archive/v_1_6_3.tar.gz'
+
+src/zlib: src/makefile.mk
+	$(GET_SRC) $@ 'http://zlib.net/zlib-1.2.8.tar.gz'
+
+src/libzip: src/makefile.mk
+	$(GET_SRC) $@ 'https://nih.at/libzip/libzip-1.1.3.tar.gz'
+
+src/lua-zip: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/henry4k/lua-zip/archive/master.zip'

@@ -52,7 +52,7 @@ build/wxwidgets: src/wxwidgets build/toolchain.cmake
 build/lua: src/lua
 	rm -rf $@
 	cp -R src/lua $@
-	cd $@ && $(MAKE) PLAT=generic \
+	cd $@ && $(MAKE) PLAT=mingw \
 					 "CC=$(CC)" \
 					 "CFLAGS=$(CFLAGS) -DLUA_COMPAT_MODULE" \
 					 "LDFLAGS=$(LDFLAGS)" \
@@ -60,4 +60,21 @@ build/lua: src/lua
 					 "RANLIB=$(RANLIB)"
 
 build/wxlua: src/wxlua build/wxwidgets build/lua build/toolchain.cmake
+	$(build-cmake)
+
+build/lua-cjson: src/lua-cjson build/lua build/toolchain.cmake
+	$(build-cmake)
+
+build/luafilesystem: src/luafilesystem build/lua
+	rm -rf $@
+	mkdir $@
+	$(CC) $(CFLAGS) $(LDFLAGS) -shared -Ibuild/lua/src -Lbuild/lua/src -llua52 -o $@/lfs$(SHARED_LIBRARY_POSTFIX) src/luafilesystem/src/lfs.c
+
+build/zlib: src/zlib build/toolchain.cmake
+	$(build-cmake)
+
+build/libzip: src/libzip
+	$(build-cmake)
+
+build/lua-zip: src/lua-zip build/libzip build/lua build/toolchain.cmake
 	$(build-cmake)
