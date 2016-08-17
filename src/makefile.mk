@@ -10,6 +10,8 @@ src/lua: src/makefile.mk
 	patch -u $@/src/luaconf.h src/luaconf.h.patch
 
 src/wxlua: src/makefile.mk
-	$(GET_SRC) $@ 'https://github.com/pkulchenko/wxlua/archive/wxwidgets311.zip'
-	patch -u $@/wxLua/build/FindwxWidgets.cmake src/wxlua-FindwxWidgets.cmake.patch
-	patch -u $@/wxLua/build/CMakewxAppLib.cmake src/wxlua-CMakewxAppLib.cmake.patch
+	$(GET_SRC) $@ 'https://github.com/pkulchenko/wxlua/archive/wxwidgets310.zip'
+	mv $@/wxLua $@_
+	rm -rf $@
+	mv $@_ $@
+	cd src && cat wxlua.patch | patch -p1

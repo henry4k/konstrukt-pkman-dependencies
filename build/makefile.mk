@@ -5,6 +5,7 @@ AUTOTOOLS_ARGS += "CXX=$(CXX)"
 AUTOTOOLS_ARGS += "CPP=$(CPP)"
 AUTOTOOLS_ARGS += "CFLAGS=$(CFLAGS)"
 AUTOTOOLS_ARGS += "CXXFLAGS=$(CXXFLAGS)"
+AUTOTOOLS_ARGS += "LDFLAGS=$(LDFLAGS)"
 AUTOTOOLS_ARGS += "--with-sysroot=$(ROOT_PATH)"
 AUTOTOOLS_ARGS += "--host=$(AUTOTOOLS_HOST)"
 
@@ -14,8 +15,6 @@ build/toolchain.cmake: build/makefile.mk
 	echo 'set(CMAKE_C_COMPILER "$(CC)")' >> $@
 	echo 'set(CMAKE_CXX_COMPILER "$(CXX)")' >> $@
 	echo 'set(CMAKE_RC_COMPILER "$(WINDRES)")' >> $@
-	echo 'set(CMAKE_C_FLAGS "$(CFLAGS)")' >> $@
-	echo 'set(CMAKE_CXX_FLAGS "$(CXXFLAGS)")' >> $@
 	echo 'set(CMAKE_FIND_ROOT_PATH "$(ROOT_PATH)")' >> $@
 	echo 'set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)' >> $@
 	echo 'set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)' >> $@
@@ -24,7 +23,12 @@ build/toolchain.cmake: build/makefile.mk
 define build-cmake
 	rm -rf $@
 	mkdir $@
-	cd $@ && cmake $(abspath src/$(notdir $@)) -DCMAKE_TOOLCHAIN_FILE=$(abspath build/toolchain.cmake) -C$(abspath build/$(notdir $@).cmake)
+	cd $@ && cmake "$(abspath src/$(notdir $@))" \
+				   "-DCMAKE_C_FLAGS=$(CFLAGS)" \
+				   "-DCMAKE_CXX_FLAGS=$(CXXFLAGS)" \
+				   "-DCMAKE_LINK_FLAGS=$(LDFLAGS)" \
+				   "-DCMAKE_TOOLCHAIN_FILE=$(abspath build/toolchain.cmake)" \
+				   "-C$(abspath build/$(notdir $@).cmake)"
 	cd $@ && $(MAKE)
 endef
 
@@ -37,7 +41,9 @@ define build-autotools
 endef
 
 build/wxwidgets: AUTOTOOLS_ARGS += "--with-msw"
+build/wxwidgets: AUTOTOOLS_ARGS += "--enable-compat28"
 build/wxwidgets: AUTOTOOLS_ARGS += "--enable-monolithic"
+build/wxwidgets: AUTOTOOLS_ARGS += "--disable-shared"
 #build/wxwidgets: AUTOTOOLS_ARGS += "--disable-all-features"
 #build/wxwidgets: AUTOTOOLS_ARGS += "--enable-utf8only"
 build/wxwidgets: src/wxwidgets build/toolchain.cmake
@@ -54,7 +60,4 @@ build/lua: src/lua
 					 "RANLIB=$(RANLIB)"
 
 build/wxlua: src/wxlua build/wxwidgets build/lua build/toolchain.cmake
-	rm -rf $@
-	mkdir $@
-	cd $@ && cmake $(abspath src/wxlua/wxLua) -DCMAKE_TOOLCHAIN_FILE=$(abspath build/toolchain.cmake) -C$(abspath build/$(notdir $@).cmake)
-	cd $@ && $(MAKE)
+	$(build-cmake)

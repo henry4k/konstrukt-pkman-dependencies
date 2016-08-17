@@ -1,0 +1,131 @@
+diff -ur old/wxlua/apps/CMakeLists.txt new/wxlua/apps/CMakeLists.txt
+--- old/wxlua/apps/CMakeLists.txt	2016-03-05 21:29:20.000000000 +0100
++++ new/wxlua/apps/CMakeLists.txt	2016-08-17 19:19:54.912497313 +0200
+@@ -46,6 +46,7 @@
+ # This must be set in the app directory
+ SET_SOURCE_FILES_PROPERTIES( "${wxLua_ROOT_DIR}/art/wxlualogo.icns"
+                              PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
++set_property(TARGET wxLua_app APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+ 
+ endfunction (wxLua_Apps_wxLua_TARGETS)
+ 
+@@ -74,6 +75,7 @@
+ # This must be set in the app directory
+ SET_SOURCE_FILES_PROPERTIES( "${wxLua_ROOT_DIR}/art/wxlualogo.icns"
+                              PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
++set_property(TARGET wxLuaCan APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+ 
+ endfunction (wxLua_Apps_wxLuaCan_TARGETS)
+ 
+@@ -121,6 +123,7 @@
+ # This must be set in the app directory
+ SET_SOURCE_FILES_PROPERTIES( "${wxLua_ROOT_DIR}/art/wxlualogo.icns"
+                              PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
++set_property(TARGET wxLuaEdit APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+ 
+ endfunction (wxLua_Apps_wxLuaEdit_TARGETS)
+ 
+@@ -149,6 +152,7 @@
+ # This must be set in the app directory
+ SET_SOURCE_FILES_PROPERTIES( "${wxLua_ROOT_DIR}/art/wxlualogo.icns"
+                              PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
++set_property(TARGET wxLuaFreeze APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+ 
+ endfunction (wxLua_Apps_wxLuaFreeze_TARGETS)
+ 
+diff -ur old/wxlua/CMakeLists.txt new/wxlua/CMakeLists.txt
+--- old/wxlua/CMakeLists.txt	2016-03-05 21:29:20.000000000 +0100
++++ new/wxlua/CMakeLists.txt	2016-08-17 19:10:02.452930311 +0200
+@@ -46,15 +46,9 @@
+ # Specify what wxWidgets libs we need to link to. Note: 'core' must be before 'base'.
+ # If this CMakeLists.txt was called from another, FIND_WXWIDGETS() may have already been called.
+ if (NOT DEFINED wxWidgets_COMPONENTS)
+-    set(wxWidgets_COMPONENTS webview gl xrc xml net media propgrid richtext aui stc html adv core base)  # complete set for static lib/dll
+-    #set(wxWidgets_COMPONENTS webview gl xrc xml net media propgrid richtext aui stc html adv core base) # for multilib/dll
+-    #set(wxWidgets_COMPONENTS stc mono) # for monolithic
++    set(wxWidgets_COMPONENTS stc mono) # for monolithic
+ endif()
+ 
+-FIND_WXWIDGETS(wxWidgets_COMPONENTS) # Ok to call multiple times
+-# CMake's wxWidgets include that will configure the build in this dir and sub-dirs
+-include( "${wxWidgets_USE_FILE}" )
+-
+ # ---------------------------------------------------------------------------
+ # Setup the location of the customizable wxluasetup.h file
+ # ---------------------------------------------------------------------------
+@@ -345,10 +339,6 @@
+ 
+ SETUP_wxLua() # all libraries are built with these settings
+ 
+-if (NOT TARGET wxStEditLib)
+-    add_subdirectory( modules/wxstedit )
+-endif()
+-
+ include_directories(${wxLuaBind_WXLUASETUP_DIR})
+ 
+ if (NOT TARGET wxLuaLib)
+diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
+--- old/wxlua/modules/CMakeLists.txt	2016-03-05 21:29:20.000000000 +0100
++++ new/wxlua/modules/CMakeLists.txt	2016-08-17 19:16:22.306247637 +0200
+@@ -330,6 +330,7 @@
+     PROPERTIES FOLDER "wxLua/Modules"
+     INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
+ 
++set_property(TARGET wxLuaLib APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+     WXLIKE_LIBRARY_NAMES( wxLuaLib wxlua "${wxLua_VERSION}")
+ 
+ endfunction (wxLua_Modules_wxLua_TARGETS)
+@@ -360,6 +361,7 @@
+     PROPERTIES FOLDER "wxLua/Modules"
+     INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
+ 
++set_property(TARGET wxLuaDebugLib APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+     WXLIKE_LIBRARY_NAMES( wxLuaDebugLib wxlua_debug "${wxLua_VERSION}")
+ 
+ endfunction (wxLua_Modules_wxLua_Debug_TARGETS)
+@@ -396,6 +398,7 @@
+     PROPERTIES FOLDER "wxLua/Modules"
+     INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
+ 
++set_property(TARGET wxLuaDebuggerLib APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+     WXLIKE_LIBRARY_NAMES( wxLuaDebuggerLib wxlua_debugger "${wxLua_VERSION}")
+ 
+ endfunction (wxLua_Modules_wxLua_Debugger_TARGETS)
+@@ -435,6 +438,7 @@
+         elseif (CMAKE_COMPILER_IS_GNUCXX)
+             set_property(TARGET wxLuaBind_${name}_Lib APPEND PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
+         endif()
++        set_property(TARGET wxLuaBind_${name}_Lib APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+     else()
+         set(wxLuaBind_${name}_Lib_)
+     endif (WXLUA_BINDTO_${name})
+@@ -529,6 +533,7 @@
+     elseif (CMAKE_COMPILER_IS_GNUCXX)
+         set_property(TARGET wxLuaBindLib APPEND PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
+     endif()
++    set_property(TARGET wxLuaBindLib APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+ 
+ endif (wxLuaBind_SEPARATE_LIBS)
+ 
+@@ -573,6 +578,7 @@
+     elseif (CMAKE_COMPILER_IS_GNUCXX)
+         set_property(TARGET wxLuaModule APPEND PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
+     endif()
++    set_property(TARGET wxLuaModule APPEND_STRING PROPERTY COMPILE_FLAGS " ${wxWidgets_CXX_FLAGS}")
+ 
+ # Don't let CMake prepend "lib" on wx.dll with MingW
+ if ("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
+diff -ur old/wxlua/modules/wxbind/src/wxcore_bind.cpp new/wxlua/modules/wxbind/src/wxcore_bind.cpp
+--- old/wxlua/modules/wxbind/src/wxcore_bind.cpp	2016-03-05 21:29:20.000000000 +0100
++++ new/wxlua/modules/wxbind/src/wxcore_bind.cpp	2016-08-17 19:10:02.452930311 +0200
+@@ -7558,8 +7558,8 @@
+     #undef wxEVT_COMMAND_FILEPICKER_CHANGED
+     wxLua_wxDefaultPosition = wxDefaultPosition;
+     wxLua_wxDefaultSize     = wxDefaultSize;
+-    wxLua_wxEVT_COMMAND_DIRPICKER_CHANGED  = wxEVT_COMMAND_DIRPICKER_CHANGED;
+-    wxLua_wxEVT_COMMAND_FILEPICKER_CHANGED = wxEVT_COMMAND_FILEPICKER_CHANGED;
++    wxLua_wxEVT_COMMAND_DIRPICKER_CHANGED  = wxEVT_DIRPICKER_CHANGED;
++    wxLua_wxEVT_COMMAND_FILEPICKER_CHANGED = wxEVT_FILEPICKER_CHANGED;
+ #endif //__MINGW32__
+ 
+     // ugly hack for wxWidgets >2.7 change to use wxStockGDI::GetXXX

@@ -1,13 +1,30 @@
 set(BUILD_SHARED_LIBS TRUE CACHE BOOL "")
-set(wxWidgets_CONFIG_EXECUTABLE "${CMAKE_CURRENT_LIST_DIR}/wxwidgets/wx-config" CACHE STRING "")
-#set(wxWidgets_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/wxwidgets" CACHE PATH "")
-#set(wxWidgets_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/wxwidgets/lib" CACHE PATH "")
-#set(wxWidgets_CONFIGURATION "mswu" CACHE PATH "")
-#set(wxWidgets_MONOLITHIC ON CACHE BOOL "")
-#set(wxWidgets_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/wxwidgets/include" CACHE STRING "")
-set(wxWidgets_LIBRARY_DIRS "${CMAKE_CURRENT_LIST_DIR}/wxwidgets/lib" CACHE STRING "")
+
+execute_process(COMMAND sh "wx-config" "--version"
+                WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/wxwidgets"
+                OUTPUT_VARIABLE _wx_version)
+execute_process(COMMAND sh "wx-config" "--cxxflags"
+                WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/wxwidgets"
+                OUTPUT_VARIABLE _wx_cxxflags)
+execute_process(COMMAND sh "wx-config" "--libs"
+                WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/wxwidgets"
+                OUTPUT_VARIABLE _wx_ldflags)
+
+string(STRIP "${_wx_version}" _wx_version)
+string(STRIP "${_wx_cxxflags}" _wx_cxxflags)
+string(STRIP "${_wx_ldflags}" _wx_ldflags)
+
+set(wxWidgets_VERSION "${_wx_version}" CACHE STRING "")
+#set(wxLuaBind_COMPONENTS webview gl stc xrc richtext propgrid html media aui adv core xml net base)
+set(wxLuaBind_COMPONENTS xrc richtext media adv core xml net base CACHE STRING "")
+set(wxLuaBind_ALL_COMPONENTS ${wxLuaBind_COMPONENTS} CACHE STRING "")
+set(wxLuaBind_ALL_COMPONENTS_28 ${wxLuaBind_COMPONENTS} CACHE STRING "")
+set(wxLuaBind_ALL_COMPONENTS_29 ${wxLuaBind_COMPONENTS} CACHE STRING "")
+set(wxWidgets_LIBRARIES ${_wx_ldflags} CACHE STRING "")
+set(wxWidgets_CXX_FLAGS "-fpermissive ${_wx_cxxflags}" CACHE STRING "")
+
 set(wxLua_LUA_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/lua/src" CACHE STRING "")
 set(wxLua_LUA_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/lua/src/liblua.a" CACHE STRING "")
 set(wxLua_LUA_LIBRARY_BUILD_SHARED FALSE CACHE BOOL "")
 set(wxLua_LUA_LIBRARY_USE_BUILTIN FALSE CACHE BOOL "")
-#set(wxLua_LUA_LIBRARY_VERSION "5.2" CACHE STRING "")
+set(wxLua_LUA_LIBRARY_VERSION "5.2" CACHE STRING "")
