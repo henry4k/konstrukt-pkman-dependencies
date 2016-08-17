@@ -1,0 +1,6 @@
+--- old/lua-zip/lua_zip.def	2016-08-17 20:38:40.458560018 +0200
++++ new/lua-zip/lua_zip.def	2016-08-17 20:38:07.792473746 +0200
+@@ -1,2 +1,2 @@
+ EXPORTS
+-luaopen_zip
++luaopen_brimworks_zip

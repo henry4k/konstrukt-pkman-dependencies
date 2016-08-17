@@ -7,7 +7,7 @@ src/wxwidgets: src/makefile.mk
 
 src/lua: src/makefile.mk
 	$(GET_SRC) $@ 'http://www.lua.org/ftp/lua-5.2.4.tar.gz'
-	patch -u $@/src/luaconf.h src/luaconf.h.patch
+	cd src && cat lua.patch | patch -p1
 
 src/wxlua: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/pkulchenko/wxlua/archive/wxwidgets310.zip'
@@ -30,3 +30,4 @@ src/libzip: src/makefile.mk
 
 src/lua-zip: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/henry4k/lua-zip/archive/master.zip'
+	cd src && cat lua-zip.patch | patch -p1
