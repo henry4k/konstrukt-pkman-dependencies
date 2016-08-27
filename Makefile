@@ -42,6 +42,8 @@ package: Makefile $(addprefix build/,$(filter-out glm,$(LIB_NAMES)))
 	# lua-zip:
 	cp -r build/lua-zip/brimworks $@/
 	cp lua-zip-LICENSE.txt $@/licenses/lua-zip.txt
+	# extra:
+	cp $(EXTRA_FILES) $@/
 
 
 package.tar.gz: Makefile package
