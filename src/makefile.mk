@@ -3,14 +3,14 @@ GENERATED += $(addprefix src/,$(LIB_NAMES))
 GET_SRC = src/get-src
 
 src/wxwidgets: src/makefile.mk
-	$(GET_SRC) $@ 'https://github.com/wxWidgets/wxWidgets/archive/v3.1.0.tar.gz'
+	$(GET_SRC) $@ 'https://github.com/wxWidgets/wxWidgets/archive/master.zip'
 
 src/lua: src/makefile.mk
 	$(GET_SRC) $@ 'http://www.lua.org/ftp/lua-5.2.4.tar.gz'
 	cd src && cat lua.patch | patch -p1
 
 src/wxlua: src/makefile.mk
-	$(GET_SRC) $@ 'https://github.com/pkulchenko/wxlua/archive/wxwidgets310.zip'
+	$(GET_SRC) $@ 'https://github.com/pkulchenko/wxlua/archive/wxwidgets311.zip'
 	mv $@/wxLua $@_
 	rm -rf $@
 	mv $@_ $@
