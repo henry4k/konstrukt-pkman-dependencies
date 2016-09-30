@@ -15,19 +15,20 @@ clean:
 		echo /$$file >> $@ ; \
 	done
 
-package: Makefile $(addprefix build/,$(filter-out glm,$(LIB_NAMES)))
+package: Makefile $(addprefix build/,$(LIB_NAMES))
 	rm -rf $@
 	mkdir $@
 	mkdir $@/licenses
 	# wxwidgets:
 	cp src/wxwidgets/docs/licence.txt $@/licenses/wxwidgets.txt
+	cp build/wxwidgets/lib/*$(SHARED_LIBRARY_POSTFIX) $@/
 	# lua:
 	cp lua-LICENSE.txt $@/licenses/lua.txt
 	cp build/lua/src/$(SHARED_LIBRARY_PREFIX)lua52$(SHARED_LIBRARY_POSTFIX) $@/
 	cp build/lua/src/lua$(EXECUTABLE_POSTFIX) $@/
 	# wxlua:
 	cp src/wxlua/docs/licence.txt $@/licenses/wxlua.txt
-	cp build/wxlua/bin/Debug/* $@/
+	cp build/wxlua/bin/$(CMAKE_BUILD_TYPE)/* $@/
 	# lua-cjson:
 	cp src/lua-cjson/LICENSE $@/licenses/lua-cjson.txt
 	cp build/lua-cjson/cjson$(SHARED_LIBRARY_POSTFIX) $@/
