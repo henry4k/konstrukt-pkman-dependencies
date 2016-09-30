@@ -24,6 +24,7 @@ define build-cmake
 	rm -rf $@
 	mkdir $@
 	cd $@ && cmake "$(abspath src/$(notdir $@))" \
+				   "-DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE)" \
 				   "-DCMAKE_C_FLAGS=$(CFLAGS)" \
 				   "-DCMAKE_CXX_FLAGS=$(CXXFLAGS)" \
 				   "-DCMAKE_LINK_FLAGS=$(LDFLAGS)" \
@@ -42,8 +43,8 @@ endef
 
 build/wxwidgets: AUTOTOOLS_ARGS += "--with-msw"
 build/wxwidgets: AUTOTOOLS_ARGS += "--enable-compat28"
-build/wxwidgets: AUTOTOOLS_ARGS += "--enable-monolithic"
-build/wxwidgets: AUTOTOOLS_ARGS += "--disable-shared"
+#build/wxwidgets: AUTOTOOLS_ARGS += "--enable-monolithic"
+build/wxwidgets: AUTOTOOLS_ARGS += "--enable-shared"
 #build/wxwidgets: AUTOTOOLS_ARGS += "--disable-all-features"
 #build/wxwidgets: AUTOTOOLS_ARGS += "--enable-utf8only"
 build/wxwidgets: src/wxwidgets build/toolchain.cmake
