@@ -43,6 +43,16 @@ package: Makefile $(addprefix build/,$(LIB_NAMES))
 	# lua-zip:
 	cp -r build/lua-zip/brimworks $@/
 	cp lua-zip-LICENSE.txt $@/licenses/lua-zip.txt
+	# semver:
+	cp src/semver/semver.lua $@/
+	# argparse:
+	cp src/argparse/src/argparse.lua $@/
+	# lanes:
+	cp src/lanes/src/lanes.lua $@/
+	mkdir $@/lanes
+	cp build/lanes/core$(SHARED_LIBRARY_POSTFIX) $@/lanes/
+	# StackTracePlus:
+	cp src/StackTracePlus/src/StackTracePlus.lua $@/
 	# extra:
 	cp $(EXTRA_FILES) $@/
 

@@ -23,7 +23,7 @@ set(wxWidgets_LIBRARIES ${_wx_ldflags} -lwsock32 CACHE STRING "")
 set(wxWidgets_CXX_FLAGS "-fpermissive ${_wx_cxxflags}" CACHE STRING "")
 
 set(wxLua_LUA_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/lua/src" CACHE STRING "")
-set(wxLua_LUA_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/lua/src/liblua.a" CACHE STRING "")
+set(wxLua_LUA_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/lua/src/lua52.dll" CACHE STRING "")
 set(wxLua_LUA_LIBRARY_BUILD_SHARED FALSE CACHE BOOL "")
 set(wxLua_LUA_LIBRARY_USE_BUILTIN FALSE CACHE BOOL "")
 set(wxLua_LUA_LIBRARY_VERSION "5.2" CACHE STRING "")

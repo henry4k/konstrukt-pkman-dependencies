@@ -24,12 +24,12 @@ define build-cmake
 	rm -rf $@
 	mkdir $@
 	cd $@ && cmake "$(abspath src/$(notdir $@))" \
-				   "-DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE)" \
-				   "-DCMAKE_C_FLAGS=$(CFLAGS)" \
-				   "-DCMAKE_CXX_FLAGS=$(CXXFLAGS)" \
-				   "-DCMAKE_LINK_FLAGS=$(LDFLAGS)" \
-				   "-DCMAKE_TOOLCHAIN_FILE=$(abspath build/toolchain.cmake)" \
-				   "-C$(abspath build/$(notdir $@).cmake)"
+	               "-DCMAKE_BUILD_TYPE=$(CMAKE_BUILD_TYPE)" \
+	               "-DCMAKE_C_FLAGS=$(CFLAGS)" \
+	               "-DCMAKE_CXX_FLAGS=$(CXXFLAGS)" \
+	               "-DCMAKE_LINK_FLAGS=$(LDFLAGS)" \
+	               "-DCMAKE_TOOLCHAIN_FILE=$(abspath build/toolchain.cmake)" \
+	               "-C$(abspath build/$(notdir $@).cmake)"
 	cd $@ && $(MAKE)
 endef
 
@@ -54,11 +54,11 @@ build/lua: src/lua
 	rm -rf $@
 	cp -R src/lua $@
 	cd $@ && $(MAKE) PLAT=mingw \
-					 "CC=$(CC)" \
-					 "CFLAGS=$(CFLAGS) -DLUA_COMPAT_MODULE" \
-					 "LDFLAGS=$(LDFLAGS)" \
-					 "AR=$(AR) rcu" \
-					 "RANLIB=$(RANLIB)"
+	                 "CC=$(CC)" \
+	                 "CFLAGS=$(CFLAGS) -DLUA_COMPAT_MODULE" \
+	                 "LDFLAGS=$(LDFLAGS)" \
+	                 "AR=$(AR) rcu" \
+	                 "RANLIB=$(RANLIB)"
 
 build/wxlua: src/wxlua build/wxwidgets build/lua build/toolchain.cmake
 	$(build-cmake)
@@ -69,7 +69,9 @@ build/lua-cjson: src/lua-cjson build/lua build/toolchain.cmake
 build/luafilesystem: src/luafilesystem build/lua
 	rm -rf $@
 	mkdir $@
-	$(CC) $(CFLAGS) $(LDFLAGS) -shared -Ibuild/lua/src -Lbuild/lua/src -llua52 -o $@/lfs$(SHARED_LIBRARY_POSTFIX) src/luafilesystem/src/lfs.c
+	$(CC) $(CFLAGS) -fPIC -Ibuild/lua/src \
+	      $(LDFLAGS) -shared -Lbuild/lua/src \
+	      -o $@/lfs$(SHARED_LIBRARY_POSTFIX) src/luafilesystem/src/lfs.c
 
 build/zlib: src/zlib build/toolchain.cmake
 	$(build-cmake)
@@ -78,4 +80,7 @@ build/libzip: src/libzip
 	$(build-cmake)
 
 build/lua-zip: src/lua-zip build/libzip build/lua build/toolchain.cmake
+	$(build-cmake)
+
+build/lanes: build/lua build/toolchain.cmake
 	$(build-cmake)
