@@ -43,3 +43,6 @@ src/lanes: src/makefile.mk
 
 src/StackTracePlus: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/ignacio/StackTracePlus/archive/0.1.2-1.tar.gz'
+
+src/luasocket: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/LuaDist/luasocket/archive/master.zip'

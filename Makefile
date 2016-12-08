@@ -1,5 +1,5 @@
 GENERATED = .gitignore package package.tar.gz
-LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem zlib libzip lua-zip
+LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem zlib libzip lua-zip luasocket
 
 all: package.tar.gz
 
@@ -53,6 +53,20 @@ package: Makefile $(addprefix build/,$(LIB_NAMES))
 	cp build/lanes/core$(SHARED_LIBRARY_POSTFIX) $@/lanes/
 	# StackTracePlus:
 	cp src/StackTracePlus/src/StackTracePlus.lua $@/
+	# luasocket:
+	mkdir $@/mime
+	mkdir $@/socket
+	cp src/luasocket/src/ltn12.lua $@/
+	cp src/luasocket/src/mime.lua  $@/
+	cp src/luasocket/src/socket.lua  $@/socket/
+	cp src/luasocket/src/ftp.lua     $@/socket/
+	cp src/luasocket/src/http.lua    $@/socket/
+	cp src/luasocket/src/smtp.lua    $@/socket/
+	cp src/luasocket/src/tp.lua      $@/socket/
+	cp src/luasocket/src/url.lua     $@/socket/
+	cp src/luasocket/src/headers.lua $@/socket/
+	cp build/luasocket/mime/core$(SHARED_LIBRARY_POSTFIX) $@/mime/
+	cp build/luasocket/socket/core$(SHARED_LIBRARY_POSTFIX) $@/socket/
 	# extra:
 	cp $(EXTRA_FILES) $@/
 

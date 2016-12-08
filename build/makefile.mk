@@ -84,3 +84,17 @@ build/lua-zip: src/lua-zip build/libzip build/lua build/toolchain.cmake
 
 build/lanes: build/lua build/toolchain.cmake
 	$(build-cmake)
+
+build/luasocket: SRC = $(addprefix src/luasocket/src/,luasocket.c \
+                                                      timeout.c \
+                                                      buffer.c \
+                                                      io.c \
+                                                      auxiliar.c \
+                                                      options.c \
+                                                      except.c \
+                                                      select.c \
+                                                      tcp.c \
+                                                      udp.c)
+
+build/luasocket: src/luasocket build/lua build/toolchain.cmake
+	$(build-cmake)
