@@ -1,5 +1,6 @@
 GENERATED = .gitignore package package.tar.gz
-LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem zlib libzip lua-zip luasocket
+C_LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem zlib libzip lua-zip luasocket lanes
+LUA_LIB_NAMES = argparse semver StackTracePlus statemachine
 
 all: package.tar.gz
 
@@ -16,9 +17,9 @@ clean:
 	done
 
 package: Makefile \
-         src/argparse src/semver src/StackTracePlus src/statemachine \
-         $(addprefix src/,$(LIB_NAMES)) \
-         $(addprefix build/,$(LIB_NAMES))
+         $(addprefix src/,$(LUA_LIB_NAMES)) \
+         $(addprefix src/,$(C_LIB_NAMES)) \
+         $(addprefix build/,$(C_LIB_NAMES))
 	rm -rf $@
 	mkdir $@
 	mkdir $@/licenses

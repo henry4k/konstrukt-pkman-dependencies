@@ -1,4 +1,5 @@
-GENERATED += $(addprefix src/,$(LIB_NAMES))
+GENERATED += $(addprefix src/,$(C_LIB_NAMES))
+GENERATED += $(addprefix src/,$(LUA_LIB_NAMES))
 
 GET_SRC = src/get-src
 

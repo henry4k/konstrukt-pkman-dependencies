@@ -1,4 +1,4 @@
-GENERATED += build/toolchain.cmake $(addprefix build/,$(LIB_NAMES))
+GENERATED += build/toolchain.cmake $(addprefix build/,$(C_LIB_NAMES))
 
 AUTOTOOLS_ARGS  = "CC=$(CC)"
 AUTOTOOLS_ARGS += "CXX=$(CXX)"
@@ -41,13 +41,13 @@ define build-autotools
 	cd $@ && make
 endef
 
-ifeq $(SYSTEM_NAME) Windows
+ifeq ($(SYSTEM_NAME), Windows)
 build/wxwidgets: AUTOTOOLS_ARGS += "--with-msw"
 endif
-ifeq $(SYSTEM_NAME) Linux
+ifeq ($(SYSTEM_NAME), Linux)
 build/wxwidgets: AUTOTOOLS_ARGS += "--with-gtk"
 endif
-ifeq $(SYSTEM_NAME) Darwin
+ifeq ($(SYSTEM_NAME), Darwin)
 build/wxwidgets: AUTOTOOLS_ARGS += "--with-osx"
 endif
 build/wxwidgets: AUTOTOOLS_ARGS += "--enable-compat28"
@@ -55,13 +55,13 @@ build/wxwidgets: AUTOTOOLS_ARGS += "--enable-shared"
 build/wxwidgets: src/wxwidgets build/toolchain.cmake
 	$(build-autotools)
 
-ifeq $(SYSTEM_NAME) Windows
+ifeq ($(SYSTEM_NAME), Windows)
 build/lua: PLAT += "mingw"
 endif
-ifeq $(SYSTEM_NAME) Linux
+ifeq ($(SYSTEM_NAME), Linux)
 build/lua: PLAT += "linux"
 endif
-ifeq $(SYSTEM_NAME) Darwin
+ifeq ($(SYSTEM_NAME), Darwin)
 build/lua: PLAT += "macosx"
 endif
 build/lua: src/lua
