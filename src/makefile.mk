@@ -32,17 +32,23 @@ src/lua-zip: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/henry4k/lua-zip/archive/master.zip'
 	cd src && cat lua-zip.patch | patch -p1
 
-src/semver: src/makefile.mk
-	$(GET_SRC) $@ 'https://github.com/kikito/semver.lua/archive/v1.2.1.tar.gz'
+src/lanes: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/LuaLanes/lanes/archive/v3.10.0.tar.gz'
+
+src/luasocket: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/LuaDist/luasocket/archive/3.0-rc1.tar.gz'
+
+
+# Lua only libraries:
 
 src/argparse: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/mpeterv/argparse/archive/0.5.0.tar.gz'
 
-src/lanes: src/makefile.mk
-	$(GET_SRC) $@ 'https://github.com/LuaLanes/lanes/archive/v3.10.0.tar.gz'
+src/semver: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/kikito/semver.lua/archive/v1.2.1.tar.gz'
 
 src/StackTracePlus: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/ignacio/StackTracePlus/archive/0.1.2-1.tar.gz'
 
-src/luasocket: src/makefile.mk
-	$(GET_SRC) $@ 'https://github.com/LuaDist/luasocket/archive/master.zip'
+src/statemachine: src/makefile.mk
+	$(GET_SRC) $@ 'https://github.com/henry4k/lua-state-machine/archive/master.zip'

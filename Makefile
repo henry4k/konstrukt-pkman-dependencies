@@ -15,7 +15,10 @@ clean:
 		echo /$$file >> $@ ; \
 	done
 
-package: Makefile $(addprefix build/,$(LIB_NAMES))
+package: Makefile \
+         src/argparse src/semver src/StackTracePlus src/statemachine \
+         $(addprefix src/,$(LIB_NAMES)) \
+         $(addprefix build/,$(LIB_NAMES))
 	rm -rf $@
 	mkdir $@
 	mkdir $@/licenses
@@ -43,22 +46,17 @@ package: Makefile $(addprefix build/,$(LIB_NAMES))
 	# lua-zip:
 	cp -r build/lua-zip/brimworks $@/
 	cp lua-zip-LICENSE.txt $@/licenses/lua-zip.txt
-	# semver:
-	cp src/semver/semver.lua $@/
-	# argparse:
-	cp src/argparse/src/argparse.lua $@/
 	# lanes:
 	cp src/lanes/src/lanes.lua $@/
 	mkdir $@/lanes
 	cp build/lanes/core$(SHARED_LIBRARY_POSTFIX) $@/lanes/
-	# StackTracePlus:
-	cp src/StackTracePlus/src/StackTracePlus.lua $@/
+	cp src/lanes/COPYRIGHT $@/licenses/lanes.txt
 	# luasocket:
 	mkdir $@/mime
 	mkdir $@/socket
 	cp src/luasocket/src/ltn12.lua $@/
 	cp src/luasocket/src/mime.lua  $@/
-	cp src/luasocket/src/socket.lua  $@/socket/
+	cp src/luasocket/src/socket.lua  $@/
 	cp src/luasocket/src/ftp.lua     $@/socket/
 	cp src/luasocket/src/http.lua    $@/socket/
 	cp src/luasocket/src/smtp.lua    $@/socket/
@@ -67,9 +65,21 @@ package: Makefile $(addprefix build/,$(LIB_NAMES))
 	cp src/luasocket/src/headers.lua $@/socket/
 	cp build/luasocket/mime/core$(SHARED_LIBRARY_POSTFIX) $@/mime/
 	cp build/luasocket/socket/core$(SHARED_LIBRARY_POSTFIX) $@/socket/
+	cp src/luasocket/LICENSE $@/licenses/luasocket.txt
+	# argparse:
+	cp src/argparse/src/argparse.lua $@/
+	cp src/argparse/LICENSE $@/licenses/argparse.txt
+	# semver:
+	cp src/semver/semver.lua $@/
+	cp src/semver/MIT-LICENSE.txt $@/licenses/semver.txt
+	# StackTracePlus:
+	cp src/StackTracePlus/src/StackTracePlus.lua $@/
+	cp src/StackTracePlus/LICENSE $@/licenses/StackTracePlus.txt
+	# statemachine:
+	cp src/statemachine/statemachine.lua $@/
+	cp src/statemachine/LICENSE $@/licenses/statemachine.txt
 	# extra:
 	cp $(EXTRA_FILES) $@/
-
 
 package.tar.gz: Makefile package
 	tar czvf $@ -C package .
