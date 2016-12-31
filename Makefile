@@ -28,8 +28,8 @@ package: Makefile \
 	cp build/wxwidgets/lib/*$(SHARED_LIBRARY_POSTFIX) $@/
 	# lua:
 	cp lua-LICENSE.txt $@/licenses/lua.txt
-	cp build/lua/src/$(SHARED_LIBRARY_PREFIX)lua52$(SHARED_LIBRARY_POSTFIX) $@/
-	cp build/lua/src/lua$(EXECUTABLE_POSTFIX) $@/
+	cp build/lua/$(SHARED_LIBRARY_PREFIX)lua$(SHARED_LIBRARY_POSTFIX) $@/
+	cp build/lua/lua$(EXECUTABLE_POSTFIX) $@/
 	# wxlua:
 	cp src/wxlua/docs/licence.txt $@/licenses/wxlua.txt
 	cp build/wxlua/bin/$(CMAKE_BUILD_TYPE)/* $@/
@@ -37,7 +37,7 @@ package: Makefile \
 	cp src/lua-cjson/LICENSE $@/licenses/lua-cjson.txt
 	cp build/lua-cjson/cjson$(SHARED_LIBRARY_POSTFIX) $@/
 	# luafilesystem:
-	cp src/luafilesystem/LICENSE $@/licenses/luafilesystem.txt
+	cp luafilesystem-LICENSE.txt $@/licenses/luafilesystem.txt
 	cp build/luafilesystem/lfs$(SHARED_LIBRARY_POSTFIX) $@/
 	# zlib:
 	cp zlib-LICENSE.txt $@/licenses/zlib.txt
@@ -80,7 +80,9 @@ package: Makefile \
 	cp src/statemachine/statemachine.lua $@/
 	cp src/statemachine/LICENSE $@/licenses/statemachine.txt
 	# extra:
-	cp $(EXTRA_FILES) $@/
+	if [ -n "$(EXTRA_FILES)" ]; then \
+	    cp $(EXTRA_FILES) $@/ ; \
+	fi
 
 package.tar.gz: Makefile package
 	tar czvf $@ -C package .

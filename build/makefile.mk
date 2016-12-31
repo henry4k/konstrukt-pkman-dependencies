@@ -29,17 +29,31 @@ define build-cmake
 	               "-DCMAKE_CXX_FLAGS=$(CXXFLAGS)" \
 	               "-DCMAKE_LINK_FLAGS=$(LDFLAGS)" \
 	               "-DCMAKE_TOOLCHAIN_FILE=$(abspath build/toolchain.cmake)" \
-	               "-C$(abspath build/$(notdir $@).cmake)"
+	               "-DSHARED_LIBRARY_PREFIX=$(SHARED_LIBRARY_PREFIX)" \
+	               "-DSHARED_LIBRARY_POSTFIX=$(SHARED_LIBRARY_POSTFIX)" \
+	               $(1)
 	cd $@ && $(MAKE)
 endef
 
 define build-autotools
 	rm -rf $@
 	cp -R src/$(notdir $@) $@
-	cd $@ && ./configure $(AUTOTOOLS_ARGS)
+	cd $@ && ./configure $(1)
 	cd $@ && touch Makefile.in # Workaround for a weird timing bug .. or so
 	cd $@ && make
 endef
+
+ifeq ($(SYSTEM_NAME), Linux)
+define fix-wxwidget-libraries
+	cd $@/lib && \
+	for lib in libwx*.so.1.0.0; do \
+	    cp $$lib $$(echo $$lib | grep -o 'libwx.*\.so'); \
+	done
+endef
+else
+define fix-wxwidget-libraries
+endef
+endif
 
 ifeq ($(SYSTEM_NAME), Windows)
 build/wxwidgets: AUTOTOOLS_ARGS += "--with-msw"
@@ -53,62 +67,42 @@ endif
 build/wxwidgets: AUTOTOOLS_ARGS += "--enable-compat28"
 build/wxwidgets: AUTOTOOLS_ARGS += "--enable-shared"
 build/wxwidgets: src/wxwidgets build/toolchain.cmake
-	$(build-autotools)
+	$(call build-autotools,$(AUTOTOOLS_ARGS))
+	$(call fix-wxwidget-libraries)
 
-ifeq ($(SYSTEM_NAME), Windows)
-build/lua: PLAT += "mingw"
-endif
-ifeq ($(SYSTEM_NAME), Linux)
-build/lua: PLAT += "linux"
-endif
-ifeq ($(SYSTEM_NAME), Darwin)
-build/lua: PLAT += "macosx"
-endif
 build/lua: src/lua
-	rm -rf $@
-	cp -R src/lua $@
-	cd $@ && $(MAKE) PLAT=$(PLAT) \
-	                 "CC=$(CC)" \
-	                 "CFLAGS=$(CFLAGS) -DLUA_COMPAT_MODULE" \
-	                 "LDFLAGS=$(LDFLAGS)" \
-	                 "AR=$(AR) rcu" \
-	                 "RANLIB=$(RANLIB)"
+	$(call build-cmake)
+	cp src/lua/src/*.h $@/
 
-build/wxlua: src/wxlua build/wxwidgets build/lua build/toolchain.cmake
-	$(build-cmake)
+LUA_CMAKE_ARGS = "-DLUA_INCLUDE_DIR=$(abspath build/lua)" \
+                 "-DLUA_LIBRARY=$(abspath build/lua/liblua$(SHARED_LIBRARY_POSTFIX))"
 
-build/lua-cjson: src/lua-cjson build/lua build/toolchain.cmake
-	$(build-cmake)
+build/wxlua: src/wxlua build/wxwidgets build/lua
+	$(call build-cmake,$(LUA_CMAKE_ARGS) -C$(abspath $@.cmake))
+
+build/lua-cjson: src/lua-cjson build/lua
+	$(call build-cmake,$(LUA_CMAKE_ARGS))
 
 build/luafilesystem: src/luafilesystem build/lua
-	rm -rf $@
-	mkdir $@
-	$(CC) $(CFLAGS) -fPIC -Ibuild/lua/src \
-	      $(LDFLAGS) -shared -Lbuild/lua/src -llua52 \
-	      -o $@/lfs$(SHARED_LIBRARY_POSTFIX) src/luafilesystem/src/lfs.c
+	$(call build-cmake,$(LUA_CMAKE_ARGS))
 
-build/zlib: src/zlib build/toolchain.cmake
-	$(build-cmake)
+build/zlib: src/zlib
+	$(call build-cmake)
+	cp src/zlib/*.h $@/
 
-build/libzip: src/libzip
-	$(build-cmake)
+build/libzip: src/libzip build/zlib
+	$(call build-cmake,"-DZLIB_INCLUDE_DIR=$(abspath build/lua)" \
+	                   "-DZLIB_LIBRARY_RELEASE=$(abspath build/zlib/libz$(SHARED_LIBRARY_POSTFIX))" \
+	                   "-DZLIB_VERSION_STRING=1.1.2")
+	cp src/libzip/lib/*.h build/libzip/
 
-build/lua-zip: src/lua-zip build/libzip build/lua build/toolchain.cmake
-	$(build-cmake)
+build/lua-zip: src/lua-zip build/libzip build/lua
+	$(call build-cmake,$(LUA_CMAKE_ARGS) \
+	                   "-DLIBZIP_INCLUDE_DIR=$(abspath build/libzip)" \
+	                   "-DLIBZIP_LIBRARY=$(abspath build/libzip/lib/libzip$(SHARED_LIBRARY_POSTFIX))")
 
-build/lanes: build/lua build/toolchain.cmake
-	$(build-cmake)
+build/lanes: src/lanes build/lua
+	$(call build-cmake,$(LUA_CMAKE_ARGS))
 
-build/luasocket: SRC = $(addprefix src/luasocket/src/,luasocket.c \
-                                                      timeout.c \
-                                                      buffer.c \
-                                                      io.c \
-                                                      auxiliar.c \
-                                                      options.c \
-                                                      except.c \
-                                                      select.c \
-                                                      tcp.c \
-                                                      udp.c)
-
-build/luasocket: src/luasocket build/lua build/toolchain.cmake
-	$(build-cmake)
+build/luasocket: src/luasocket build/lua
+	$(call build-cmake,$(LUA_CMAKE_ARGS))

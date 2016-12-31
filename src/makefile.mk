@@ -7,8 +7,7 @@ src/wxwidgets: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/wxWidgets/wxWidgets/archive/master.zip'
 
 src/lua: src/makefile.mk
-	$(GET_SRC) $@ 'http://www.lua.org/ftp/lua-5.2.4.tar.gz'
-	cd src && cat lua.patch | patch -p1
+	$(GET_SRC) $@ 'https://github.com/LuaDist/lua/archive/5.2.4.tar.gz'
 
 src/wxlua: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/pkulchenko/wxlua/archive/wxwidgets311.zip'
@@ -21,7 +20,7 @@ src/lua-cjson: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/mpx/lua-cjson/archive/2.1.0.tar.gz'
 
 src/luafilesystem: src/makefile.mk
-	$(GET_SRC) $@ 'https://github.com/keplerproject/luafilesystem/archive/v_1_6_3.tar.gz'
+	$(GET_SRC) $@ 'https://github.com/LuaDist/luafilesystem/archive/1.6.2.tar.gz'
 
 src/zlib: src/makefile.mk
 	$(GET_SRC) $@ 'http://zlib.net/zlib-1.2.8.tar.gz'
