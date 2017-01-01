@@ -28,7 +28,7 @@ package: Makefile \
 	cp build/wxwidgets/lib/*$(SHARED_LIBRARY_POSTFIX) $@/
 	# lua:
 	cp lua-LICENSE.txt $@/licenses/lua.txt
-	cp build/lua/$(SHARED_LIBRARY_PREFIX)lua$(SHARED_LIBRARY_POSTFIX) $@/
+	cp build/lua/liblua$(SHARED_LIBRARY_POSTFIX) $@/
 	cp build/lua/lua$(EXECUTABLE_POSTFIX) $@/
 	# wxlua:
 	cp src/wxlua/docs/licence.txt $@/licenses/wxlua.txt
