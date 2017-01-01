@@ -67,7 +67,17 @@ diff -ur old/wxlua/CMakeLists.txt new/wxlua/CMakeLists.txt
 diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
 --- old/wxlua/modules/CMakeLists.txt	2016-03-05 21:29:20.000000000 +0100
 +++ new/wxlua/modules/CMakeLists.txt	2016-08-17 19:16:22.306247637 +0200
-@@ -330,6 +330,7 @@
+@@ -22,6 +22,9 @@
+                     "${wxLua_ROOT_DIR}/modules/"
+                     "${wxLua_LUA_INCLUDE_DIR}")
++if (WIN32)
++    set(wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES} -lwsock32")
++endif()
+ 
+ # ===========================================================================
+ # wxLua/modules/lua
+ # ===========================================================================
+@@ -330,6 +333,7 @@
      PROPERTIES FOLDER "wxLua/Modules"
      INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
  
@@ -75,7 +85,7 @@ diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
      WXLIKE_LIBRARY_NAMES( wxLuaLib wxlua "${wxLua_VERSION}")
  
  endfunction (wxLua_Modules_wxLua_TARGETS)
-@@ -360,6 +361,7 @@
+@@ -360,6 +364,7 @@
      PROPERTIES FOLDER "wxLua/Modules"
      INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
  
@@ -83,7 +93,7 @@ diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
      WXLIKE_LIBRARY_NAMES( wxLuaDebugLib wxlua_debug "${wxLua_VERSION}")
  
  endfunction (wxLua_Modules_wxLua_Debug_TARGETS)
-@@ -396,6 +398,7 @@
+@@ -396,6 +401,7 @@
      PROPERTIES FOLDER "wxLua/Modules"
      INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
  
@@ -91,7 +101,7 @@ diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
      WXLIKE_LIBRARY_NAMES( wxLuaDebuggerLib wxlua_debugger "${wxLua_VERSION}")
  
  endfunction (wxLua_Modules_wxLua_Debugger_TARGETS)
-@@ -435,6 +438,7 @@
+@@ -435,6 +441,7 @@
          elseif (CMAKE_COMPILER_IS_GNUCXX)
              set_property(TARGET wxLuaBind_${name}_Lib APPEND PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
          endif()
@@ -99,7 +109,7 @@ diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
      else()
          set(wxLuaBind_${name}_Lib_)
      endif (WXLUA_BINDTO_${name})
-@@ -529,6 +533,7 @@
+@@ -529,6 +536,7 @@
      elseif (CMAKE_COMPILER_IS_GNUCXX)
          set_property(TARGET wxLuaBindLib APPEND PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
      endif()
@@ -107,7 +117,7 @@ diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
  
  endif (wxLuaBind_SEPARATE_LIBS)
  
-@@ -573,6 +578,7 @@
+@@ -573,6 +581,7 @@
      elseif (CMAKE_COMPILER_IS_GNUCXX)
          set_property(TARGET wxLuaModule APPEND PROPERTY COMPILE_FLAGS "-Wno-deprecated-declarations")
      endif()

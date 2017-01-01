@@ -4,7 +4,7 @@ GENERATED += $(addprefix src/,$(LUA_LIB_NAMES))
 GET_SRC = src/get-src
 
 src/wxwidgets: src/makefile.mk
-	$(GET_SRC) $@ 'https://github.com/wxWidgets/wxWidgets/archive/master.zip'
+	$(GET_SRC) $@ 'https://github.com/wxWidgets/wxWidgets/archive/v3.1.0.tar.gz'
 
 src/lua: src/makefile.mk
 	$(GET_SRC) $@ 'https://github.com/LuaDist/lua/archive/5.2.4.tar.gz'

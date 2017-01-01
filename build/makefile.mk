@@ -57,6 +57,7 @@ endif
 
 ifeq ($(SYSTEM_NAME), Windows)
 build/wxwidgets: AUTOTOOLS_ARGS += "--with-msw"
+build/wxwidgets: AUTOTOOLS_ARGS += "LDFLAGS=-Wl,--allow-multiple-definition"
 endif
 ifeq ($(SYSTEM_NAME), Linux)
 build/wxwidgets: AUTOTOOLS_ARGS += "--with-gtk"
@@ -66,7 +67,11 @@ build/wxwidgets: AUTOTOOLS_ARGS += "--with-osx"
 endif
 build/wxwidgets: AUTOTOOLS_ARGS += "--enable-compat28"
 build/wxwidgets: AUTOTOOLS_ARGS += "--enable-shared"
-build/wxwidgets: src/wxwidgets build/toolchain.cmake
+#build/wxwidgets: AUTOTOOLS_ARGS += "--enable-monolithic"
+build/wxwidgets: AUTOTOOLS_ARGS += "--disable-sys-libs"
+build/wxwidgets: AUTOTOOLS_ARGS += "--disable-rpath"
+build/wxwidgets: AUTOTOOLS_ARGS += "--enable-utf8only"
+build/wxwidgets: src/wxwidgets
 	$(call build-autotools,$(AUTOTOOLS_ARGS))
 	$(call fix-wxwidget-libraries)
 
@@ -90,9 +95,15 @@ build/zlib: src/zlib
 	$(call build-cmake)
 	cp src/zlib/*.h $@/
 
+ifeq ($(SYSTEM_NAME), Windows)
+ZLIB_LIB = libzlib$(SHARED_LIBRARY_POSTFIX)
+else
+ZLIB_LIB = libz$(SHARED_LIBRARY_POSTFIX)
+endif
+
 build/libzip: src/libzip build/zlib
-	$(call build-cmake,"-DZLIB_INCLUDE_DIR=$(abspath build/lua)" \
-	                   "-DZLIB_LIBRARY_RELEASE=$(abspath build/zlib/libz$(SHARED_LIBRARY_POSTFIX))" \
+	$(call build-cmake,"-DZLIB_INCLUDE_DIR=$(abspath build/zlib)" \
+	                   "-DZLIB_LIBRARY_RELEASE=$(abspath build/zlib/$(ZLIB_LIB))" \
 	                   "-DZLIB_VERSION_STRING=1.1.2")
 	cp src/libzip/lib/*.h build/libzip/
 
