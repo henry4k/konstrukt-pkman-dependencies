@@ -38,7 +38,7 @@ endef
 define build-autotools
 	rm -rf $@
 	cp -R src/$(notdir $@) $@
-	cd $@ && ./configure $(1)
+	cd $@ && ./configure $(AUTOTOOLS_ARGS) $(1)
 	cd $@ && touch Makefile.in # Workaround for a weird timing bug .. or so
 	cd $@ && make
 endef
@@ -72,7 +72,7 @@ build/wxwidgets: AUTOTOOLS_ARGS += "--disable-sys-libs"
 build/wxwidgets: AUTOTOOLS_ARGS += "--disable-rpath"
 build/wxwidgets: AUTOTOOLS_ARGS += "--enable-utf8only"
 build/wxwidgets: src/wxwidgets
-	$(call build-autotools,$(AUTOTOOLS_ARGS))
+	$(call build-autotools)
 	$(call fix-wxwidget-libraries)
 
 build/lua: src/lua build/toolchain.cmake

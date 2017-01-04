@@ -23,7 +23,7 @@ src/luafilesystem:
 	$(GET_SRC) $@ 'https://github.com/LuaDist/luafilesystem/archive/1.6.2.tar.gz'
 
 src/zlib:
-	$(GET_SRC) $@ 'http://zlib.net/zlib-1.2.9.tar.gz'
+	$(GET_SRC) $@ 'http://zlib.net/zlib-1.2.10.tar.gz'
 
 src/libzip:
 	$(GET_SRC) $@ 'https://nih.at/libzip/libzip-1.1.3.tar.gz'
