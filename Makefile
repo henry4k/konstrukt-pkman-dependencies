@@ -32,7 +32,8 @@ package: Makefile \
 	cp build/lua/lua$(EXECUTABLE_POSTFIX) $@/
 	# wxlua:
 	cp src/wxlua/docs/licence.txt $@/licenses/wxlua.txt
-	cp build/wxlua/bin/$(CMAKE_BUILD_TYPE)/* $@/
+	cp build/wxlua/bin/$(CMAKE_BUILD_TYPE)/*$(SHARED_LIBRARY_POSTFIX) $@/
+	cp build/wxlua/bin/$(CMAKE_BUILD_TYPE)/wxLuaFreeze$(EXECUTABLE_POSTFIX) $@/
 	# lua-cjson:
 	cp src/lua-cjson/LICENSE $@/licenses/lua-cjson.txt
 	cp build/lua-cjson/cjson$(SHARED_LIBRARY_POSTFIX) $@/

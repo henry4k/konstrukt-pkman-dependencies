@@ -96,9 +96,9 @@ build/zlib: src/zlib build/toolchain.cmake
 	cp src/zlib/*.h $@/
 
 ifeq ($(SYSTEM_NAME), Windows)
-ZLIB_LIB = libzlib$(SHARED_LIBRARY_POSTFIX)
+ZLIB_LIB = libzlibstatic.a
 else
-ZLIB_LIB = libz$(SHARED_LIBRARY_POSTFIX)
+ZLIB_LIB = libzstatic.a
 endif
 
 build/libzip: src/libzip build/zlib build/toolchain.cmake
