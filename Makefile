@@ -84,9 +84,10 @@ package: $(addprefix src/,$(LUA_LIB_NAMES)) \
 	    cp $(EXTRA_FILES) $@/ ; \
 	fi
 	# config.mk
-	echo -n 'SYSTEM_NAME = ' > $@/config.mk
+	echo -n 'SYSTEM_NAME = '                            > $@/config.mk
 	echo '$(SYSTEM_NAME)' | tr '[:upper:]' '[:lower:]' >> $@/config.mk
-	echo 'ARCHITECTURE = $(ARCHITECTURE)' >> $@/config.mk
+	echo 'ARCHITECTURE = $(ARCHITECTURE)'              >> $@/config.mk
+	echo 'EXECUTABLE_POSTFIX = $(EXECUTABLE_POSTFIX)'  >> $@/config.mk
 
 package.tar.gz: package
 	tar czvf $@ -C package .
