@@ -23,7 +23,7 @@ clean:
 
 package: $(addprefix src/,$(LUA_LIB_NAMES)) \
          $(addprefix src/,$(C_LIB_NAMES)) \
-         $(addprefix build/,$(C_LIB_NAMES)) \
+         $(addprefix build/,$(C_LIB_NAMES))
 	rm -rf $@
 	mkdir $@
 	mkdir $@/licenses

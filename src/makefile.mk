@@ -1,5 +1,17 @@
-GENERATED += $(addprefix src/,$(C_LIB_NAMES))
-GENERATED += $(addprefix src/,$(LUA_LIB_NAMES))
+GENERATED += src/wxwidgets \
+             src/lua \
+             src/wxlua \
+             src/lua-cjson \
+             src/luafilesystem\
+             src/zlib \
+             src/libzip \
+             src/lua-zip \
+             src/lanes \
+             src/luasocket \
+             src/argparse \
+             src/semver \
+             src/StackTracePlus \
+             src/statemachine
 
 GET_SRC = src/get-src
 
