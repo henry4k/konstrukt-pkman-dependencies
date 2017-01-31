@@ -41,7 +41,7 @@ diff -ur old/wxlua/apps/wxluafreeze/wxluafreeze.rc new/wxlua/apps/wxluafreeze/wx
  /////////////////////////////////////////////////////////////////////////////
  
 -lua   ICON   "../../art/wxlua.ico"
-++lua   ICON   "../../../../build/konstrukt-pkman-icon/icon.ico"
++lua   ICON   "../../../../build/konstrukt-pkman-icon/icon.ico"
  
  #include <wx/msw/wx.rc>
 -
