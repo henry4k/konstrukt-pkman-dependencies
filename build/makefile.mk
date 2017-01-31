@@ -82,7 +82,7 @@ build/lua: src/lua build/toolchain.cmake
 LUA_CMAKE_ARGS = "-DLUA_INCLUDE_DIR=$(abspath build/lua)" \
                  "-DLUA_LIBRARY=$(abspath build/lua/liblua$(SHARED_LIBRARY_POSTFIX))"
 
-build/wxlua: src/wxlua build/wxwidgets build/lua build/toolchain.cmake
+build/wxlua: src/wxlua build/wxwidgets build/lua build/toolchain.cmake build/konstrukt-pkman-icon
 	$(call build-cmake,$(LUA_CMAKE_ARGS) -C$(abspath $@.cmake))
 
 build/lua-cjson: src/lua-cjson build/lua build/toolchain.cmake
@@ -117,3 +117,11 @@ build/lanes: src/lanes build/lua build/toolchain.cmake
 
 build/luasocket: src/luasocket build/lua build/toolchain.cmake
 	$(call build-cmake,$(LUA_CMAKE_ARGS))
+
+build/konstrukt-pkman-icon: src/konstrukt-pkman-icon
+	rm -rf $@
+	cp -r $< $@
+	cd $@ && make
+
+build/konstrukt-pkman-launcher: src/konstrukt-pkman-launcher build/toolchain.cmake
+	$(call build-cmake,"-DICON_FILE_NAME=$(abspath build/konstrukt-pkman-icon/icon.ico"))

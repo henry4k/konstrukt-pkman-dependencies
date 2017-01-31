@@ -1,0 +1,4 @@
+#!/usr/bin/env lua
+local payload = arg[1]
+local tag = string.format('<launcher:%03d>', #payload)
+io.stdout:write(payload, tag)

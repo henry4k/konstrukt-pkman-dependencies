@@ -1,5 +1,10 @@
+include config.mk
+
 GENERATED = .gitignore package package.tar.gz
-C_LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem zlib libzip lua-zip luasocket lanes
+C_LIB_NAMES = wxwidgets lua wxlua lua-cjson luafilesystem zlib libzip lua-zip luasocket lanes konstrukt-pkman-icon
+ifeq ($(SYSTEM_NAME), Windows)
+C_LIB_NAMES += konstrukt-pkman-launcher
+endif
 LUA_LIB_NAMES = argparse semver StackTracePlus statemachine
 
 all: package.tar.gz
@@ -18,7 +23,7 @@ clean:
 
 package: $(addprefix src/,$(LUA_LIB_NAMES)) \
          $(addprefix src/,$(C_LIB_NAMES)) \
-         $(addprefix build/,$(C_LIB_NAMES))
+         $(addprefix build/,$(C_LIB_NAMES)) \
 	rm -rf $@
 	mkdir $@
 	mkdir $@/licenses
@@ -79,6 +84,14 @@ package: $(addprefix src/,$(LUA_LIB_NAMES)) \
 	# statemachine:
 	cp src/statemachine/statemachine.lua $@/
 	cp src/statemachine/LICENSE $@/licenses/statemachine.txt
+	# konstrukt-pkman-icon:
+	mkdir $@/icons
+	cp build/konstrukt-pkman-icon/*.png $@/icons/
+	cp build/konstrukt-pkman-icon/*.ico $@/icons/
+	# konstrukt-pkman-launcher:
+	if [ -e build/konstrukt-pkman-launcher ]; then \
+	    cp build/konstrukt-pkman-launcher/launcher.exe $@/ ; \
+	fi
 	# extra:
 	if [ -n "$(EXTRA_FILES)" ]; then \
 	    cp $(EXTRA_FILES) $@/ ; \
@@ -92,6 +105,5 @@ package: $(addprefix src/,$(LUA_LIB_NAMES)) \
 package.tar.gz: package
 	tar czvf $@ -C package .
 
-include config.mk
 include src/makefile.mk
 include build/makefile.mk

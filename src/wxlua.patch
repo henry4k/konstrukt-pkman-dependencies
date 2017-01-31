@@ -1,6 +1,6 @@
 diff -ur old/wxlua/apps/CMakeLists.txt new/wxlua/apps/CMakeLists.txt
---- old/wxlua/apps/CMakeLists.txt	2016-03-05 21:29:20.000000000 +0100
-+++ new/wxlua/apps/CMakeLists.txt	2016-08-17 19:19:54.912497313 +0200
+--- old/wxlua/apps/CMakeLists.txt	2017-01-30 18:35:14.271599961 +0100
++++ new/wxlua/apps/CMakeLists.txt	2017-01-30 18:35:52.876270923 +0100
 @@ -46,6 +46,7 @@
  # This must be set in the app directory
  SET_SOURCE_FILES_PROPERTIES( "${wxLua_ROOT_DIR}/art/wxlualogo.icns"
@@ -33,9 +33,29 @@ diff -ur old/wxlua/apps/CMakeLists.txt new/wxlua/apps/CMakeLists.txt
  
  endfunction (wxLua_Apps_wxLuaFreeze_TARGETS)
  
+diff -ur old/wxlua/apps/wxluafreeze/wxluafreeze.rc new/wxlua/apps/wxluafreeze/wxluafreeze.rc
+--- old/wxlua/apps/wxluafreeze/wxluafreeze.rc	2017-01-30 18:35:14.271599961 +0100
++++ new/wxlua/apps/wxluafreeze/wxluafreeze.rc	2017-01-30 18:36:26.373729163 +0100
+@@ -7,15 +7,6 @@
+ // Licence:     wxWidgets licence
+ /////////////////////////////////////////////////////////////////////////////
+ 
+-lua   ICON   "../../art/wxlua.ico"
+++lua   ICON   "../../../../build/konstrukt-pkman-icon/icon.ico"
+ 
+ #include <wx/msw/wx.rc>
+-
+-// --------------------------------------------------------------------------
+-// Setup the file properties dialog fields
+-#define WINRC_VER_FileDescription_STR  "wxLuaFreeze Lua interpreter.\0"
+-#define WINRC_VER_InternalName_STR     "wxLuaFreeze\0"
+-#define WINRC_VER_OriginalFilename_STR "wxLuaFreeze.exe\0"
+-#define WINRC_VER_Productname_STR      "wxLuaFreeze\0"
+-
+-#include "../../build/wxlua_version.rc"
 diff -ur old/wxlua/CMakeLists.txt new/wxlua/CMakeLists.txt
---- old/wxlua/CMakeLists.txt	2016-03-05 21:29:20.000000000 +0100
-+++ new/wxlua/CMakeLists.txt	2016-08-17 19:10:02.452930311 +0200
+--- old/wxlua/CMakeLists.txt	2017-01-30 18:35:14.238267222 +0100
++++ new/wxlua/CMakeLists.txt	2017-01-30 18:35:52.876270923 +0100
 @@ -46,15 +46,9 @@
  # Specify what wxWidgets libs we need to link to. Note: 'core' must be before 'base'.
  # If this CMakeLists.txt was called from another, FIND_WXWIDGETS() may have already been called.
@@ -65,9 +85,10 @@ diff -ur old/wxlua/CMakeLists.txt new/wxlua/CMakeLists.txt
  
  if (NOT TARGET wxLuaLib)
 diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
---- old/wxlua/modules/CMakeLists.txt	2016-03-05 21:29:20.000000000 +0100
-+++ new/wxlua/modules/CMakeLists.txt	2016-08-17 19:16:22.306247637 +0200
-@@ -22,6 +22,9 @@
+--- old/wxlua/modules/CMakeLists.txt	2017-01-30 18:35:14.241600496 +0100
++++ new/wxlua/modules/CMakeLists.txt	2017-01-30 18:35:52.876270923 +0100
+@@ -21,6 +21,9 @@
+ include_directories("${wxLua_ROOT_DIR}/"
                      "${wxLua_ROOT_DIR}/modules/"
                      "${wxLua_LUA_INCLUDE_DIR}")
 +if (WIN32)
@@ -76,7 +97,6 @@ diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
  
  # ===========================================================================
  # wxLua/modules/lua
- # ===========================================================================
 @@ -330,6 +333,7 @@
      PROPERTIES FOLDER "wxLua/Modules"
      INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
@@ -126,9 +146,9 @@ diff -ur old/wxlua/modules/CMakeLists.txt new/wxlua/modules/CMakeLists.txt
  # Don't let CMake prepend "lib" on wx.dll with MingW
  if ("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
 diff -ur old/wxlua/modules/wxbind/src/wxcore_bind.cpp new/wxlua/modules/wxbind/src/wxcore_bind.cpp
---- old/wxlua/modules/wxbind/src/wxcore_bind.cpp	2016-03-05 21:29:20.000000000 +0100
-+++ new/wxlua/modules/wxbind/src/wxcore_bind.cpp	2016-08-17 19:10:02.452930311 +0200
-@@ -7558,8 +7558,8 @@
+--- old/wxlua/modules/wxbind/src/wxcore_bind.cpp	2017-01-30 18:35:14.254933592 +0100
++++ new/wxlua/modules/wxbind/src/wxcore_bind.cpp	2017-01-30 18:35:52.879603334 +0100
+@@ -7755,8 +7755,8 @@
      #undef wxEVT_COMMAND_FILEPICKER_CHANGED
      wxLua_wxDefaultPosition = wxDefaultPosition;
      wxLua_wxDefaultSize     = wxDefaultSize;
@@ -139,3 +159,4 @@ diff -ur old/wxlua/modules/wxbind/src/wxcore_bind.cpp new/wxlua/modules/wxbind/s
  #endif //__MINGW32__
  
      // ugly hack for wxWidgets >2.7 change to use wxStockGDI::GetXXX
+Nur in new/wxlua/modules/wxbind/src: wxcore_bind.cpp.orig.
